@@ -1,0 +1,1227 @@
+<!doctype html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="3D 列印機器原理圖解講義：九個主題、八張圖解、材料比較與課堂複習。"><title>3D 列印機器原理｜互動教學講義</title><style>.np-root,
+.np-root * {
+  box-sizing: border-box;
+}
+
+.np-root {
+  --np-navy: #2f4f9f;
+  --np-blue: #536df5;
+  --np-blue-2: #6d83ff;
+  --np-ink: #18305f;
+  --np-muted: #64759a;
+  --np-sky: #eaf2ff;
+  --np-paper: #fbfcff;
+  --np-line: #c9d7f4;
+  --np-soft-line: #e1e9fa;
+  --np-coral: #ff755f;
+  --np-green: #2f8a5b;
+  --np-red-soft: #fff0ed;
+  --np-shadow: 0 18px 46px rgba(28, 53, 111, 0.14);
+
+  width: calc(100% - 32px);
+  max-width: 1800px;
+  margin: 16px auto;
+
+  position: relative;
+  overflow: hidden;
+
+  border: 1px solid rgba(47, 79, 159, 0.14);
+  border-radius: 28px;
+
+  background:
+    radial-gradient(circle at 8% 7%, rgba(83,109,245,.12), transparent 25rem),
+    linear-gradient(145deg, #f5f8ff 0%, #fbfcff 52%, #eef3ff 100%);
+
+  color: var(--np-ink);
+
+  font-family:
+    "Noto Sans TC",
+    "Microsoft JhengHei",
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+
+  box-shadow: var(--np-shadow);
+  line-height: 1.7;
+}
+
+.np-root button,
+.np-root input,
+.np-root select,
+.np-root textarea {
+  font: inherit;
+}
+
+.np-root img,
+.np-root iframe {
+  max-width: 100%;
+}
+
+.np-root a {
+  color: var(--np-blue);
+}
+
+.np-root a:hover {
+  color: var(--np-navy);
+}
+
+/* Header */
+
+.np-root .np-masthead {
+  position: relative;
+  min-height: 122px;
+
+  display: flex;
+  align-items: center;
+  gap: 20px;
+
+  padding: 22px 30px;
+
+  color: #fff;
+
+  background:
+    linear-gradient(
+      112deg,
+      var(--np-navy) 0 57%,
+      #3e60c8 57% 72%,
+      var(--np-blue) 72% 100%
+    );
+
+  overflow: hidden;
+}
+
+.np-root .np-masthead::after {
+  content: "";
+  position: absolute;
+  right: 10%;
+  top: -20%;
+  width: 160px;
+  height: 140%;
+  border-left: 7px solid rgba(255,255,255,.9);
+  border-right: 7px solid rgba(255,255,255,.9);
+  transform: skewX(-38deg);
+  opacity: .88;
+  pointer-events: none;
+}
+
+.np-root .np-brand-icon {
+  flex: 0 0 auto;
+  width: 72px;
+  height: 72px;
+
+  display: grid;
+  place-items: center;
+
+  border: 2px solid rgba(255,255,255,.75);
+  border-radius: 20px 5px 20px 5px;
+
+  background: rgba(255,255,255,.12);
+
+  font-size: 2rem;
+}
+
+.np-root .np-titleblock {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+}
+
+.np-root .np-titleblock h1 {
+  margin: 0;
+  font-size: clamp(1.5rem, 3vw, 2.45rem);
+  line-height: 1.25;
+  letter-spacing: .06em;
+}
+
+.np-root .np-titleblock p {
+  margin: 8px 0 0;
+  font-size: clamp(.82rem, 1.4vw, 1rem);
+  font-weight: 700;
+  letter-spacing: .14em;
+  opacity: .86;
+}
+
+/* Layout */
+
+.np-root .np-layout {
+  display: grid;
+  grid-template-columns: clamp(230px, 17vw, 300px) minmax(0, 1fr);
+  min-height: calc(100vh - 170px);
+}
+
+.np-root .np-sidebar {
+  padding: 20px 14px 26px;
+
+  border-right: 1px solid var(--np-line);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(234,242,255,.94),
+      rgba(247,250,255,.98)
+    );
+}
+
+.np-root .np-sidebar-title {
+  margin: 0 8px 12px;
+  color: var(--np-muted);
+  font-size: .73rem;
+  font-weight: 900;
+  letter-spacing: .18em;
+}
+
+.np-root .np-nav {
+  display: grid;
+  gap: 6px;
+}
+
+.np-root .np-nav-button {
+  width: 100%;
+  min-height: 44px;
+
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+
+  padding: 7px 9px;
+
+  border: 0;
+  border-radius: 14px 5px 14px 5px;
+
+  color: #294274;
+  background: transparent;
+
+  text-align: left;
+  cursor: pointer;
+
+  transition:
+    transform .18s ease,
+    background .18s ease,
+    color .18s ease,
+    box-shadow .18s ease;
+}
+
+.np-root .np-nav-button:hover {
+  background: #fff;
+  transform: translateX(3px);
+}
+
+.np-root .np-nav-button[aria-current="true"] {
+  color: #fff;
+  background: linear-gradient(110deg, var(--np-navy), #4565cb);
+  box-shadow: 0 9px 20px rgba(47,79,159,.2);
+}
+
+.np-root .np-nav-index {
+  width: 29px;
+  height: 29px;
+
+  display: grid;
+  place-items: center;
+
+  border: 1px solid currentColor;
+  border-radius: 9px 3px 9px 3px;
+
+  font-size: .72rem;
+  font-weight: 900;
+}
+
+.np-root .np-nav-label {
+  overflow: hidden;
+  font-size: .83rem;
+  font-weight: 800;
+  line-height: 1.25;
+  text-overflow: ellipsis;
+}
+
+.np-root .np-main {
+  min-width: 0;
+  padding: 20px 22px 28px;
+}
+
+/* Tabs */
+
+.np-root .np-tabs-wrap {
+  margin-bottom: 15px;
+  padding-bottom: 7px;
+  border-bottom: 1px solid var(--np-line);
+}
+
+.np-root .np-tabs {
+  display: flex;
+  gap: 8px;
+
+  padding: 1px 1px 8px;
+
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.np-root .np-tab {
+  flex: 0 0 auto;
+
+  min-height: 39px;
+  padding: 8px 14px;
+
+  border: 1px solid var(--np-line);
+  border-radius: 14px 5px 14px 5px;
+
+  color: #395181;
+  background: #fff;
+
+  font-size: .82rem;
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+.np-root .np-tab:hover {
+  border-color: #95aae4;
+  color: var(--np-navy);
+}
+
+.np-root .np-tab[aria-selected="true"] {
+  color: #fff;
+  border-color: var(--np-blue);
+  background: var(--np-blue);
+}
+
+/* Stage */
+
+.np-root .np-stage {
+  position: relative;
+
+  padding: clamp(14px, 2.2vw, 24px);
+
+  border: 1px solid rgba(47,79,159,.14);
+  border-radius: 24px 7px 24px 7px;
+
+  background:
+    linear-gradient(#fff,#fff) padding-box,
+    linear-gradient(
+      135deg,
+      rgba(83,109,245,.30),
+      rgba(47,79,159,.04)
+    ) border-box;
+
+  min-height: clamp(560px, 68vh, 920px);
+}
+
+.np-root .np-page {
+  display: none;
+}
+
+.np-root .np-page.is-active {
+  display: block;
+  animation: npFade .25s ease;
+}
+
+@keyframes npFade {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.np-root .np-page-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  margin-bottom: 20px;
+}
+
+.np-root .np-page-number {
+  flex: 0 0 auto;
+
+  min-width: 48px;
+  height: 48px;
+
+  display: grid;
+  place-items: center;
+
+  padding: 0 10px;
+
+  border-radius: 15px 4px 15px 4px;
+
+  color: #fff;
+  background: linear-gradient(135deg, var(--np-navy), var(--np-blue));
+
+  font-weight: 900;
+  font-size: .86rem;
+}
+
+.np-root .np-page-head h2 {
+  margin: 0;
+  color: var(--np-ink);
+  font-size: clamp(1.35rem, 2.7vw, 2rem);
+  line-height: 1.3;
+}
+
+.np-root .np-page-head p {
+  margin: 4px 0 0;
+  color: var(--np-muted);
+  font-size: .9rem;
+}
+
+.np-root .np-section {
+  scroll-margin-top: 16px;
+}
+
+.np-root .np-section h3 {
+  margin: 0 0 13px;
+  padding-bottom: 9px;
+
+  border-bottom: 2px solid var(--np-sky);
+
+  color: var(--np-navy);
+
+  font-size: clamp(1.05rem, 2vw, 1.3rem);
+}
+
+.np-root .np-section h4 {
+  margin: 18px 0 8px;
+  color: var(--np-ink);
+}
+
+/* Cards */
+
+.np-root .np-card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 15px;
+}
+
+.np-root .np-card {
+  min-width: 0;
+  padding: 18px;
+
+  border: 1px solid var(--np-soft-line);
+  border-radius: 18px 5px 18px 5px;
+
+  background: #fff;
+
+  box-shadow: 0 9px 24px rgba(29,52,103,.07);
+}
+
+.np-root .np-card h4 {
+  margin: 0 0 7px;
+  color: var(--np-navy);
+}
+
+.np-root .np-callout {
+  margin: 16px 0;
+  padding: 16px 18px;
+
+  border-left: 5px solid var(--np-blue);
+  border-radius: 4px 14px 14px 4px;
+
+  background: var(--np-sky);
+
+  font-weight: 700;
+}
+
+.np-root .np-callout.warning {
+  border-left-color: var(--np-coral);
+  background: var(--np-red-soft);
+}
+
+.np-root .np-callout.success {
+  border-left-color: var(--np-green);
+  background: #edf9f3;
+}
+
+.np-root .np-quote {
+  margin: 16px 0;
+  padding: 16px 20px;
+
+  border-left: 5px solid var(--np-coral);
+
+  background: linear-gradient(135deg, #fff7f4, #fff);
+
+  color: #6f3f36;
+
+  font-size: 1.04rem;
+  font-weight: 800;
+}
+
+.np-root .np-keywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  margin: 15px 0;
+}
+
+.np-root .np-keyword {
+  padding: 8px 13px;
+
+  border: 1px solid #b8c9f4;
+  border-radius: 999px;
+
+  background: #f7f9ff;
+
+  color: var(--np-navy);
+
+  font-weight: 800;
+}
+
+/* Message */
+
+.np-root .np-message {
+  overflow: hidden;
+
+  border: 1px solid var(--np-line);
+  border-radius: 18px 5px 18px 5px;
+
+  background: #fff;
+}
+
+.np-root .np-message-head {
+  padding: 10px 14px;
+
+  color: #fff;
+  background: linear-gradient(110deg, var(--np-navy), #4e6bd2);
+
+  font-size: .82rem;
+  font-weight: 800;
+}
+
+.np-root .np-message-body {
+  padding: 18px;
+  white-space: pre-line;
+}
+
+.np-root .np-fake-action {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 9px 15px;
+
+  border-radius: 8px;
+
+  background: var(--np-coral);
+  color: #fff;
+
+  font-weight: 900;
+}
+
+/* Images */
+
+.np-root .np-image-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 15px;
+}
+
+.np-root .np-image-card {
+  margin: 0;
+  padding: 10px;
+
+  border: 1px solid var(--np-line);
+  border-radius: 18px 5px 18px 5px;
+
+  background: #fff;
+}
+
+.np-root .np-image-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+
+  border-radius: 12px 4px 12px 4px;
+
+  object-fit: contain;
+}
+
+.np-root .np-image-card figcaption {
+  padding: 9px 5px 2px;
+
+  color: var(--np-muted);
+  font-size: .8rem;
+  font-weight: 800;
+  text-align: center;
+}
+
+/* Embedded media */
+
+.np-root .np-embed-box {
+  margin: 15px 0;
+
+  overflow: hidden;
+
+  border: 1px solid var(--np-line);
+  border-radius: 18px 5px 18px 5px;
+
+  background: #f5f8ff;
+}
+
+.np-root .np-embed-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+
+  padding: 10px 14px;
+
+  border-bottom: 1px solid var(--np-line);
+
+  background: #edf3ff;
+}
+
+.np-root .np-embed-title {
+  min-width: 0;
+
+  color: var(--np-ink);
+  font-weight: 900;
+  font-size: .88rem;
+}
+
+.np-root .np-external-link {
+  flex: 0 0 auto;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+
+  padding: 6px 10px;
+
+  border: 1px solid #aabce9;
+  border-radius: 9px 3px 9px 3px;
+
+  color: var(--np-navy) !important;
+  background: #fff;
+
+  font-size: .75rem;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.np-root .np-video {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+
+  background: #0c1630;
+}
+
+.np-root .np-video iframe {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  border: 0;
+}
+
+.np-root .np-site-frame {
+  width: 100%;
+  height: clamp(520px, 70vh, 900px);
+
+  display: block;
+
+  border: 0;
+
+  background: #fff;
+}
+
+.np-root .np-site-note {
+  padding: 10px 14px;
+
+  border-top: 1px solid var(--np-line);
+
+  color: var(--np-muted);
+
+  background: #fbfcff;
+
+  font-size: .75rem;
+}
+
+/* Tables */
+
+.np-root .np-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+
+  margin: 15px 0;
+
+  border: 1px solid var(--np-line);
+  border-radius: 15px 5px 15px 5px;
+}
+
+.np-root .np-table {
+  width: 100%;
+  min-width: 720px;
+
+  border-collapse: collapse;
+
+  background: #fff;
+}
+
+.np-root .np-table th,
+.np-root .np-table td {
+  padding: 11px 12px;
+
+  border-bottom: 1px solid #e2e9f7;
+
+  vertical-align: top;
+  text-align: left;
+}
+
+.np-root .np-table th {
+  color: #fff;
+  background: var(--np-navy);
+
+  font-size: .82rem;
+}
+
+.np-root .np-table td {
+  font-size: .86rem;
+}
+
+.np-root .np-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.np-root .np-table tr:nth-child(even) td {
+  background: #f8faff;
+}
+
+/* Attack chain */
+
+.np-root .np-chain {
+  display: grid;
+  grid-template-columns:
+    minmax(0,1fr) auto
+    minmax(0,1fr) auto
+    minmax(0,1fr) auto
+    minmax(0,1fr) auto
+    minmax(0,1fr);
+
+  align-items: center;
+  gap: 8px;
+
+  margin: 25px 0;
+}
+
+.np-root .np-chain-step {
+  min-height: 94px;
+
+  display: grid;
+  place-items: center;
+
+  padding: 12px;
+
+  border: 1px solid #b9c9ee;
+  border-radius: 17px 5px 17px 5px;
+
+  background: linear-gradient(145deg, #fff, #edf3ff);
+
+  color: var(--np-navy);
+
+  font-weight: 900;
+  text-align: center;
+}
+
+.np-root .np-chain-arrow {
+  color: var(--np-coral);
+  font-size: 1.4rem;
+  font-weight: 900;
+}
+
+/* Stop Check Verify */
+
+.np-root .np-scv {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 14px;
+
+  margin: 18px 0;
+}
+
+.np-root .np-scv-card {
+  padding: 18px;
+
+  border: 1px solid var(--np-line);
+  border-radius: 19px 5px 19px 5px;
+
+  background: #fff;
+}
+
+.np-root .np-scv-letter {
+  width: 48px;
+  height: 48px;
+
+  display: grid;
+  place-items: center;
+
+  margin-bottom: 10px;
+
+  border-radius: 14px 4px 14px 4px;
+
+  color: #fff;
+  background: var(--np-blue);
+
+  font-size: 1.2rem;
+  font-weight: 900;
+}
+
+.np-root .np-scv-card:nth-child(1) .np-scv-letter {
+  background: var(--np-coral);
+}
+
+.np-root .np-scv-card:nth-child(3) .np-scv-letter {
+  background: var(--np-green);
+}
+
+/* Puzzle */
+
+.np-root .np-puzzle {
+  display: grid;
+  gap: 10px;
+}
+
+.np-root .np-puzzle-step {
+  position: relative;
+
+  padding: 14px 15px 14px 56px;
+
+  border: 1px solid var(--np-line);
+  border-radius: 15px 5px 15px 5px;
+
+  background: #fff;
+}
+
+.np-root .np-puzzle-step::before {
+  content: attr(data-step);
+
+  position: absolute;
+  left: 13px;
+  top: 13px;
+
+  width: 29px;
+  height: 29px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 9px 3px 9px 3px;
+
+  color: #fff;
+  background: var(--np-blue);
+
+  font-size: .75rem;
+  font-weight: 900;
+}
+
+/* Checklist */
+
+.np-root .np-check-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 10px;
+
+  padding: 0;
+  margin: 0;
+
+  list-style: none;
+}
+
+.np-root .np-check-list li {
+  position: relative;
+
+  padding: 12px 14px 12px 42px;
+
+  border: 1px solid var(--np-soft-line);
+  border-radius: 13px 4px 13px 4px;
+
+  background: #fff;
+}
+
+.np-root .np-check-list li::before {
+  content: "✓";
+
+  position: absolute;
+  left: 13px;
+  top: 10px;
+
+  color: var(--np-green);
+
+  font-weight: 900;
+}
+
+/* Prompt */
+
+.np-root .np-prompt {
+  position: relative;
+
+  margin: 15px 0;
+  padding: 18px;
+
+  overflow-x: auto;
+
+  border-radius: 14px 4px 14px 4px;
+
+  color: #eaf2ff;
+  background: #17264b;
+
+  font-family:
+    "JetBrains Mono",
+    Consolas,
+    "Microsoft JhengHei",
+    monospace;
+
+  white-space: pre-wrap;
+}
+
+/* Controls */
+
+.np-root .np-controls {
+  display: grid;
+  grid-template-columns: 48px minmax(0,1fr) 48px;
+  align-items: center;
+  gap: 12px;
+
+  margin-top: 17px;
+}
+
+.np-root .np-control {
+  width: 48px;
+  height: 42px;
+
+  display: grid;
+  place-items: center;
+
+  border: 1px solid var(--np-line);
+  border-radius: 14px 5px 14px 5px;
+
+  color: var(--np-navy);
+  background: #fff;
+
+  font-size: 1.2rem;
+  font-weight: 900;
+
+  cursor: pointer;
+}
+
+.np-root .np-control:hover:not(:disabled) {
+  color: #fff;
+  background: var(--np-navy);
+}
+
+.np-root .np-control:disabled {
+  opacity: .3;
+  cursor: default;
+}
+
+.np-root .np-progress {
+  height: 8px;
+
+  overflow: hidden;
+
+  border-radius: 999px;
+  background: #e4ebfa;
+}
+
+.np-root .np-progress-bar {
+  width: 0;
+  height: 100%;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--np-navy),
+      var(--np-blue),
+      var(--np-coral)
+    );
+
+  transition: width .22s ease;
+}
+
+.np-root .np-page-count {
+  grid-column: 2;
+  justify-self: center;
+
+  margin-top: -6px;
+
+  color: var(--np-muted);
+
+  font-size: .74rem;
+  font-weight: 900;
+  letter-spacing: .12em;
+}
+
+/* Footer */
+
+.np-root .np-footer {
+  padding: 16px 22px;
+
+  border-top: 1px solid var(--np-line);
+
+  color: var(--np-muted);
+  background: #f0f5ff;
+
+  font-size: .76rem;
+  text-align: center;
+}
+
+/* Accessibility */
+
+.np-root .np-nav-button:focus-visible,
+.np-root .np-tab:focus-visible,
+.np-root .np-control:focus-visible,
+.np-root .np-external-link:focus-visible {
+  outline: 3px solid rgba(255,117,95,.5);
+  outline-offset: 2px;
+}
+
+/* Wide desktop / 16:9 classroom displays */
+
+@media (min-width: 1440px) {
+
+  .np-root {
+    width: calc(100% - 48px);
+    max-width: 1800px;
+  }
+
+  .np-root .np-main {
+    padding: 24px 28px 32px;
+  }
+
+  .np-root .np-stage {
+    padding: clamp(20px, 1.8vw, 32px);
+  }
+
+  .np-root .np-page-head h2 {
+    font-size: clamp(1.55rem, 2vw, 2.2rem);
+  }
+}
+
+
+/* Tablet */
+
+@media (max-width: 980px) {
+
+  .np-root {
+    border-radius: 20px;
+  }
+
+  .np-root .np-layout {
+    grid-template-columns: 190px minmax(0,1fr);
+  }
+
+  .np-root .np-main {
+    padding: 15px;
+  }
+
+  .np-root .np-card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .np-root .np-chain {
+    grid-template-columns: 1fr;
+  }
+
+  .np-root .np-chain-arrow {
+    transform: rotate(90deg);
+    text-align: center;
+  }
+}
+
+/* Mobile */
+
+@media (max-width: 720px) {
+
+  .np-root {
+    width: 100%;
+    margin: 0 auto;
+    border-radius: 14px;
+  }
+
+  .np-root .np-masthead {
+    min-height: 92px;
+    padding: 15px;
+  }
+
+  .np-root .np-brand-icon {
+    width: 52px;
+    height: 52px;
+
+    border-radius: 14px 4px 14px 4px;
+
+    font-size: 1.4rem;
+  }
+
+  .np-root .np-titleblock h1 {
+    letter-spacing: .02em;
+  }
+
+  .np-root .np-titleblock p {
+    display: none;
+  }
+
+  .np-root .np-layout {
+    display: block;
+    min-height: 0;
+  }
+
+  .np-root .np-sidebar {
+    padding: 10px;
+
+    border-right: 0;
+    border-bottom: 1px solid var(--np-line);
+  }
+
+  .np-root .np-sidebar-title {
+    display: none;
+  }
+
+  .np-root .np-nav {
+    display: flex;
+    gap: 6px;
+
+    overflow-x: auto;
+
+    padding-bottom: 5px;
+  }
+
+  .np-root .np-nav-button {
+    flex: 0 0 auto;
+
+    width: auto;
+    max-width: 170px;
+  }
+
+  .np-root .np-nav-label {
+    white-space: nowrap;
+  }
+
+  .np-root .np-main {
+    padding: 11px 8px 16px;
+  }
+
+  .np-root .np-stage {
+    min-height: 0;
+    padding: 12px;
+    border-radius: 16px 5px 16px 5px;
+  }
+
+  .np-root .np-page-head {
+    gap: 9px;
+  }
+
+  .np-root .np-page-number {
+    min-width: 40px;
+    height: 40px;
+  }
+
+  .np-root .np-card-grid,
+  .np-root .np-image-grid,
+  .np-root .np-scv,
+  .np-root .np-check-list {
+    grid-template-columns: 1fr;
+  }
+
+  .np-root .np-site-frame {
+    height: 70vh;
+    min-height: 480px;
+  }
+
+  .np-root .np-embed-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .np-root .np-external-link {
+    align-self: flex-start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .np-root *,
+  .np-root *::before,
+  .np-root *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body{margin:0;background:#f1f5fc}html{scroll-behavior:smooth}button,a{-webkit-tap-highlight-color:transparent}
+.np-root{font-size:16px}.np-root .np-nav-label,.np-root .np-tab{font-size:.9rem}.np-root .np-table td{font-size:.94rem}.np-root .np-table th{font-size:.9rem}.np-root .np-table{min-width:520px}
+.np-root .np-section p{margin:0 0 16px}.np-root .np-callout{font-weight:400}.np-root .np-sidebar{position:relative}.sidebar-actions{display:grid;gap:10px;margin:24px 8px 0}.sidebar-actions a,.sidebar-actions button{font-size:.8rem;text-align:center}.np-root .np-nav{gap:7px}
+.lesson-list{padding-left:1.6em}.lesson-list li{padding:10px 0 12px;border-bottom:1px solid var(--np-soft-line)}
+.figure-button{display:block;padding:0;border:0;background:transparent;width:100%;cursor:zoom-in}.np-root .np-image-card{max-width:900px;margin:0 auto}.np-root .np-image-card img{max-height:65vh;object-fit:contain}.figure-hint{text-align:center;font-size:.8rem;color:var(--np-muted);margin-top:8px!important}
+.np-root .np-section[hidden],.np-root .np-page[hidden]{display:none!important}.np-root .np-page.is-active{display:block}.np-root .np-main{scroll-margin-top:16px}.np-root .np-stage{min-height:590px}.np-root .np-titleblock p{letter-spacing:.06em}.np-root .np-footer a{display:inline-block;margin:0 6px}
+.image-dialog{width:min(1100px,95vw);max-height:95vh;padding:16px;border:1px solid #c9d7f4;border-radius:18px;background:#fbfcff;color:#18305f}.image-dialog::backdrop{background:#10254ac9}.image-dialog img{display:block;max-width:100%;max-height:78vh;object-fit:contain;margin:auto}.image-dialog button{float:right;background:#2f4f9f;color:white;padding:8px 16px;border:0;border-radius:8px;cursor:pointer}.image-dialog p{clear:both;text-align:center;font:14px 'Microsoft JhengHei',sans-serif}.skip-link{position:absolute;top:-100px;left:20px;z-index:10;background:white;padding:8px}.skip-link:focus{top:10px}
+button:focus-visible,a:focus-visible,section:focus-visible,.np-table-wrap:focus-visible{outline:3px solid #ff755f;outline-offset:3px}
+@media(max-width:720px){.np-root .np-sidebar{padding:12px}.np-root .np-nav{display:flex;overflow-x:auto;gap:8px}.np-root .np-nav-button{min-width:160px;max-width:210px;flex:0 0 auto}.np-root .np-sidebar-title{margin-bottom:8px}.sidebar-actions{display:flex;flex-wrap:wrap;margin:12px 0 0}.np-root .np-nav-label{white-space:normal}.np-root .np-image-card img{max-height:none}.np-root .np-stage{min-height:400px}.np-root .np-table th,.np-root .np-table td{padding:10px}.np-root .np-page-head h2{font-size:1.35rem}.np-root .np-brand-icon{flex-shrink:0}.np-root .np-titleblock p{letter-spacing:0}.np-root .np-nav-button:hover{transform:none}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.np-root *{animation:none!important;transition:none!important}}
+@media print{body{background:white}.np-root{width:100%;margin:0;border:0;border-radius:0;box-shadow:none;color:black}.np-root .np-layout{display:block}.np-root .np-sidebar,.np-root .np-tabs-wrap,.np-root .np-controls,.figure-hint,.image-dialog{display:none!important}.np-root .np-masthead{background:white;color:black;min-height:auto;padding:12px}.np-root .np-masthead::after{display:none}.np-root .np-main,.np-root .np-stage{padding:0;border:0}.np-root .np-page[hidden],.np-root .np-section[hidden],.np-root .np-page{display:block!important}.np-root .np-page{break-before:page}.np-root .np-page:first-child{break-before:auto}.np-root .np-section{margin-bottom:24px}.np-root .np-image-card img{max-height:180mm}.np-root .np-table-wrap{overflow:visible}.np-root .np-table{min-width:0}.np-root .np-table th{background:#eaf2ff;color:black}.np-root .np-page-number{background:#eaf2ff;color:black}.np-root .np-callout,.np-root .np-card{box-shadow:none;break-inside:avoid}.np-root .np-footer{background:white}}
+</style></head><body>
+<a class="skip-link" href="#np-main">跳到講義內容</a>
+<div class="np-root"><header class="np-masthead"><div class="np-brand-icon" aria-hidden="true">⬡</div><div class="np-titleblock"><h1>3D 列印機器原理</h1><p>機械結構 × 擠出加熱 × 精準控制｜圖解教學講義</p></div></header>
+<div class="np-layout"><aside class="np-sidebar"><p class="np-sidebar-title">COURSE CONTENTS · 課程目錄</p><nav class="np-nav" id="np-nav" aria-label="章節導覽"></nav><div class="sidebar-actions"><button type="button" class="np-external-link" id="print-handout">列印完整講義</button><a class="np-external-link" href="3D列印機器原理.pdf" target="_blank" rel="noopener">原始 PDF ↗</a><a class="np-external-link" href="https://hackmd.io/KYyn9hZ1QmibLLlXRzqc1w" target="_blank" rel="noopener">HackMD 講義 ↗</a></div></aside>
+<main class="np-main" id="np-main"><div class="np-tabs-wrap"><div class="np-tabs" id="np-tabs" role="tablist" aria-label="章節子題"></div></div><div class="np-stage"><article class="np-page" data-title="課程導讀"><section class="np-section" id="panel-0-0" role="tabpanel" tabindex="0" data-tab-title="學習目標"><div class="np-page-head"><span class="np-page-number">01</span><div><h2>學習目標</h2><p>從數位模型到實體物件，認識機械、加熱與控制。</p></div></div><p>閱讀後，你應能說明線材如何變成實體物件、辨認列印機主要組件、理解 X／Y／Z 三軸的作用，並依材料特性與列印現象提出初步檢查方向。</p><div class="np-card-grid"><div class="np-card"><h4>01 · 看懂機器</h4><p>從結構與運動系統，認識三軸定位和材料擠出。</p></div><div class="np-card"><h4>02 · 理解流程</h4><p>串起 3D 模型、切片、G-code 與逐層堆疊。</p></div><div class="np-card"><h4>03 · 比較材料</h4><p>依原稿比較 PLA、ABS 與 PETG 的特性和用途。</p></div><div class="np-card"><h4>04 · 判讀問題</h4><p>觀察翹曲、偏移與供料中斷，找出檢查方向。</p></div></div><div class="np-callout">左側選章節，上方切子題；也可用下方箭頭依序閱讀。</div></section></article><article class="np-page" data-title="機器結構總覽"><section class="np-section" id="panel-1-0" role="tabpanel" tabindex="0" data-tab-title="重點講解"><div class="np-page-head"><span class="np-page-number">02</span><div><h2>機器結構總覽</h2><p>辨認機架、列印頭、平台與三軸方向。</p></div></div><p>3D 列印機將數位模型轉換為實體物件。原圖中的機器利用三軸運動定位噴嘴，讓加熱後的材料沿指定路徑擠出，並在列印平台上逐層堆疊。</p>
+<p>機器可從三個部分觀察：支撐與導引移動的機架、負責送料與加熱的擠出系統，以及承接列印物件的平台。列印平台若具加熱功能，也稱為加熱床。各部分需互相配合，才能在正確位置放置材料。</p>
+<div class="np-table-wrap" tabindex="0" role="region" aria-label="可左右捲動的對照表"><table class="np-table"><thead><tr><th scope="col">位置／部件</th><th scope="col">原圖標示</th><th scope="col">功能</th></tr></thead><tbody><tr><td>X 軸</td><td>左右</td><td>控制左右方向的相對移動</td></tr><tr><td>Y 軸</td><td>前後</td><td>控制前後方向的相對移動</td></tr><tr><td>Z 軸</td><td>上下</td><td>改變列印高度，配合各層堆疊</td></tr><tr><td>擠出頭</td><td>噴嘴＋熱端</td><td>將熔融材料擠出</td></tr><tr><td>列印平台</td><td>加熱床</td><td>承接首層與後續堆疊的物件</td></tr></tbody></table></div>
+<aside class="np-callout warning"><strong>閱讀提醒：</strong> 原圖以「擠出頭（噴嘴＋熱端）」概括標示列印頭。學習時仍應區分推進線材的送料部分，以及加熱並擠出材料的熱端／噴嘴。</aside></section><section class="np-section" id="panel-1-1" role="tabpanel" tabindex="0" data-tab-title="原稿圖解"><div class="np-page-head"><span class="np-page-number">02</span><div><h2>機器結構總覽</h2><p>辨認機架、列印頭、平台與三軸方向。</p></div></div><figure class="np-image-card"><button class="figure-button" type="button" aria-label="放大圖解：機器結構與三軸方向，擷取自原 PDF 第 1 頁"><img src="output/handout/images/01-machine.png" alt="機器結構與三軸方向，擷取自原 PDF 第 1 頁" loading="lazy" decoding="async"></button><figcaption>圖 1：先辨認噴嘴與平台，再觀察三軸如何改變兩者的相對位置。</figcaption></figure><p class="figure-hint">點選圖解可放大閱讀；按 Esc 關閉。</p></section></article><article class="np-page" data-title="擠出頭的工作原理"><section class="np-section" id="panel-2-0" role="tabpanel" tabindex="0" data-tab-title="重點講解"><div class="np-page-head"><span class="np-page-number">03</span><div><h2>擠出頭的工作原理</h2><p>沿著線材路徑理解送料、加熱與堆疊。</p></div></div><p>列印材料通常以線材捲的形式供應，原圖以 PLA 為例。線材進入送料機構後，送料齒輪持續推進線材，使材料進入加熱區。加熱塊使線材熔融，噴嘴再把熔融材料擠出到平台或已完成的材料層上。</p>
+<p>這個過程可分成「送料 → 加熱熔融 → 噴嘴擠出 → 逐層堆疊」四個步驟。噴嘴移動路徑決定材料放在哪裡，送料則決定材料能否持續供應；兩者必須協調，才能形成模型的輪廓與內部結構。</p>
+<div class="np-table-wrap" tabindex="0" role="region" aria-label="可左右捲動的對照表"><table class="np-table"><thead><tr><th scope="col">部分</th><th scope="col">作用</th><th scope="col">觀察重點</th></tr></thead><tbody><tr><td>耗材線材</td><td>提供成形材料</td><td>是否順暢進入送料路徑</td></tr><tr><td>送料齒輪</td><td>推進線材</td><td>是否能穩定送料</td></tr><tr><td>加熱塊</td><td>加熱並熔融線材</td><td>加熱與送料需配合</td></tr><tr><td>噴嘴</td><td>擠出熔融材料</td><td>材料是否能順暢擠出</td></tr></tbody></table></div></section><section class="np-section" id="panel-2-1" role="tabpanel" tabindex="0" data-tab-title="原稿圖解"><div class="np-page-head"><span class="np-page-number">03</span><div><h2>擠出頭的工作原理</h2><p>沿著線材路徑理解送料、加熱與堆疊。</p></div></div><figure class="np-image-card"><button class="figure-button" type="button" aria-label="放大圖解：送料、加熱塊與噴嘴的工作示意，擷取自原 PDF 第 1 頁"><img src="output/handout/images/02-extrusion.png" alt="送料、加熱塊與噴嘴的工作示意，擷取自原 PDF 第 1 頁" loading="lazy" decoding="async"></button><figcaption>圖 2：沿著線材路徑閱讀，理解材料從固態線材到堆疊成形的過程。</figcaption></figure><p class="figure-hint">點選圖解可放大閱讀；按 Esc 關閉。</p></section></article><article class="np-page" data-title="從模型到成品的列印流程"><section class="np-section" id="panel-3-0" role="tabpanel" tabindex="0" data-tab-title="重點講解"><div class="np-page-head"><span class="np-page-number">04</span><div><h2>從模型到成品的列印流程</h2><p>設計、切片、執行，讓數位模型成為實體。</p></div></div><p>列印流程從 3D 模型開始。設計完成後，將模型交給切片軟體處理，產生機器可執行的 G-code 指令。列印機接收指令後，控制運動與擠出，逐層製作物件，最後取出成品。</p>
+<div class="np-table-wrap" tabindex="0" role="region" aria-label="可左右捲動的對照表"><table class="np-table"><thead><tr><th scope="col">順序</th><th scope="col">階段</th><th scope="col">工作內容</th></tr></thead><tbody><tr><td>1</td><td>3D 模型／設計</td><td>決定物件的形狀</td></tr><tr><td>2</td><td>切片軟體</td><td>把模型轉成逐層列印所需的 G-code</td></tr><tr><td>3</td><td>3D 列印機</td><td>執行指令，以逐層堆疊方式成形</td></tr><tr><td>4</td><td>完成物件</td><td>取出成品並觀察列印結果</td></tr></tbody></table></div>
+<p>原圖的控制板說明也提到 G-code：它是連結軟體規劃與硬體動作的指令。模型描述「要做出的形狀」，切片產生「機器要如何製作」，列印機則實際完成動作。</p></section><section class="np-section" id="panel-3-1" role="tabpanel" tabindex="0" data-tab-title="原稿圖解"><div class="np-page-head"><span class="np-page-number">04</span><div><h2>從模型到成品的列印流程</h2><p>設計、切片、執行，讓數位模型成為實體。</p></div></div><figure class="np-image-card"><button class="figure-button" type="button" aria-label="放大圖解：3D 模型、切片、列印與成品流程，擷取自原 PDF 第 1 頁"><img src="output/handout/images/03-workflow.png" alt="3D 模型、切片、列印與成品流程，擷取自原 PDF 第 1 頁" loading="lazy" decoding="async"></button><figcaption>圖 3：依箭頭順序閱讀，分辨設計、指令與實體製作三個層次。</figcaption></figure><p class="figure-hint">點選圖解可放大閱讀；按 Esc 關閉。</p></section></article><article class="np-page" data-title="運動系統：皮帶與螺桿"><section class="np-section" id="panel-4-0" role="tabpanel" tabindex="0" data-tab-title="重點講解"><div class="np-page-head"><span class="np-page-number">05</span><div><h2>運動系統：皮帶與螺桿</h2><p>把馬達旋轉轉換成直線移動。</p></div></div><p>運動系統把馬達旋轉轉換成滑台、噴頭或平台的直線移動。原圖比較兩種常見方式：皮帶傳動與螺桿傳動。</p>
+<p>皮帶傳動由馬達帶動皮帶輪，再透過皮帶推動滑台移動。原圖指出，X、Y 軸常採用這種方式。若皮帶鬆脫或張力不足，可能出現列印偏移，因此皮帶狀態也是故障檢查的重點。</p>
+<p>螺桿傳動則由馬達轉動螺桿，使螺母滑塊沿螺桿移動。原圖指出，Z 軸常採用螺桿傳動，並以帶動平台上下移動為例。</p>
+<div class="np-table-wrap" tabindex="0" role="region" aria-label="可左右捲動的對照表"><table class="np-table"><thead><tr><th scope="col">傳動方式</th><th scope="col">動作關係</th><th scope="col">原圖中的常見用途</th></tr></thead><tbody><tr><td>皮帶</td><td>馬達 → 皮帶輪 → 皮帶 → 滑台</td><td>X、Y 軸</td></tr><tr><td>螺桿</td><td>馬達 → 螺桿旋轉 → 螺母滑塊移動</td><td>Z 軸</td></tr></tbody></table></div>
+<aside class="np-callout warning"><strong>閱讀提醒：</strong> 圖中「平台上下移動」是一種示例。辨認機器時，應以實際機構為準，觀察噴頭與平台如何共同形成三軸的相對移動。</aside></section><section class="np-section" id="panel-4-1" role="tabpanel" tabindex="0" data-tab-title="原稿圖解"><div class="np-page-head"><span class="np-page-number">05</span><div><h2>運動系統：皮帶與螺桿</h2><p>把馬達旋轉轉換成直線移動。</p></div></div><figure class="np-image-card"><button class="figure-button" type="button" aria-label="放大圖解：皮帶與螺桿傳動比較，擷取自原 PDF 第 1 頁"><img src="output/handout/images/04-motion.png" alt="皮帶與螺桿傳動比較，擷取自原 PDF 第 1 頁" loading="lazy" decoding="async"></button><figcaption>圖 4：比較兩種機構如何把旋轉運動轉成直線運動。</figcaption></figure><p class="figure-hint">點選圖解可放大閱讀；按 Esc 關閉。</p></section></article><article class="np-page" data-title="關鍵組件與作用"><section class="np-section" id="panel-5-0" role="tabpanel" tabindex="0" data-tab-title="重點講解"><div class="np-page-head"><span class="np-page-number">06</span><div><h2>關鍵組件與作用</h2><p>從單一組件到整台機器的協調運作。</p></div></div><p>列印機需要定位、加熱、供電、控制與材料供應等功能共同運作。可用下表把各組件與任務配對。</p>
+<div class="np-table-wrap" tabindex="0" role="region" aria-label="可左右捲動的對照表"><table class="np-table"><thead><tr><th scope="col">組件</th><th scope="col">主要作用</th><th scope="col">與列印的關係</th></tr></thead><tbody><tr><td>步進馬達</td><td>提供移動控制</td><td>讓噴頭與平台定位</td></tr><tr><td>熱端／噴嘴</td><td>加熱熔融耗材並擠出</td><td>完成材料的熔融與成形</td></tr><tr><td>加熱床</td><td>加熱平台</td><td>提升附著性、減少翹曲</td></tr><tr><td>控制板</td><td>接收 G-code，驅動馬達並進行溫控</td><td>協調運動與加熱</td></tr><tr><td>電源供應器</td><td>提供穩定電力</td><td>支援整機運作</td></tr><tr><td>線材／耗材</td><td>提供列印材料</td><td>材料特性會影響列印品質</td></tr></tbody></table></div>
+<p>從系統角度看，控制板依 G-code 指令協調馬達與溫控；馬達負責定位，熱端負責熔融與擠出，加熱床協助材料附著，電源供應器則支援各部分運作。任何一個環節失常，都可能反映在成品上。</p></section><section class="np-section" id="panel-5-1" role="tabpanel" tabindex="0" data-tab-title="原稿圖解"><div class="np-page-head"><span class="np-page-number">06</span><div><h2>關鍵組件與作用</h2><p>從單一組件到整台機器的協調運作。</p></div></div><figure class="np-image-card"><button class="figure-button" type="button" aria-label="放大圖解：關鍵組件與功能表，擷取自原 PDF 第 1 頁"><img src="output/handout/images/05-components.png" alt="關鍵組件與功能表，擷取自原 PDF 第 1 頁" loading="lazy" decoding="async"></button><figcaption>圖 5：將組件名稱與功能配對，建立機器的整體概念。</figcaption></figure><p class="figure-hint">點選圖解可放大閱讀；按 Esc 關閉。</p></section></article><article class="np-page" data-title="座標系統：用 X、Y、Z 描述位置"><section class="np-section" id="panel-6-0" role="tabpanel" tabindex="0" data-tab-title="重點講解"><div class="np-page-head"><span class="np-page-number">07</span><div><h2>座標系統：用 X、Y、Z 描述位置</h2><p>用三個方向描述材料放置位置。</p></div></div><p>原圖以笛卡兒座標說明三軸定位。X 軸表示左右方向，Y 軸表示前後方向，Z 軸表示上下方向。透過三軸位置的變化，機器將材料放到指定位置，完成精準堆疊。</p>
+<p>列印每一層時，要控制材料在平面上的位置；進入下一層時，則要改變列印高度。理解三軸的作用，有助於把模型的空間位置與實際機器動作連結起來。</p>
+<aside class="np-callout warning"><strong>原圖辨讀提醒：</strong> 第 6 區的立體座標圖把 Y 箭頭畫成向上、Z 箭頭畫成斜向，但文字與第 1 區均標示「Y＝前後、Z＝上下」。閱讀時請以文字方向為準，不要把紙面箭頭的方向直接當成機器的實際軸向。</aside></section><section class="np-section" id="panel-6-1" role="tabpanel" tabindex="0" data-tab-title="原稿圖解"><div class="np-page-head"><span class="np-page-number">07</span><div><h2>座標系統：用 X、Y、Z 描述位置</h2><p>用三個方向描述材料放置位置。</p></div></div><aside class="np-callout warning">原稿座標箭頭的畫法容易誤解；以文字 X＝左右、Y＝前後、Z＝上下及機器結構圖為準。</aside><figure class="np-image-card"><button class="figure-button" type="button" aria-label="放大圖解：原圖的笛卡兒座標示意，擷取自原 PDF 第 1 頁"><img src="output/handout/images/06-coordinates.png" alt="原圖的笛卡兒座標示意，擷取自原 PDF 第 1 頁" loading="lazy" decoding="async"></button><figcaption>圖 6：本圖保留原稿；軸向請搭配上方辨讀提醒與圖 1 閱讀。</figcaption></figure><p class="figure-hint">點選圖解可放大閱讀；按 Esc 關閉。</p></section></article><article class="np-page" data-title="常見材料：PLA、ABS、PETG"><section class="np-section" id="panel-7-0" role="tabpanel" tabindex="0" data-tab-title="重點講解"><div class="np-page-head"><span class="np-page-number">08</span><div><h2>常見材料：PLA、ABS、PETG</h2><p>從材料特性理解用途與列印條件。</p></div></div><p>材料選擇需同時考慮用途與列印條件。原圖以 PLA、ABS、PETG 三種材料比較其特性、優缺點與用途，下表依原稿整理。</p>
+<div class="np-table-wrap" tabindex="0" role="region" aria-label="可左右捲動的對照表"><table class="np-table"><thead><tr><th scope="col">材料</th><th scope="col">原稿列出的特性</th><th scope="col">優點</th><th scope="col">限制／列印重點</th><th scope="col">原稿列出的用途</th></tr></thead><tbody><tr><td>PLA</td><td>易列印；原稿列有生物可分解</td><td>原稿列有低味、不易翹曲</td><td>耐熱性低；其他材料敘述見下方提醒</td><td>原型、裝飾品、教育用途</td></tr><tr><td>ABS</td><td>強度高、耐熱</td><td>堅固耐用</td><td>翹曲明顯，需要加熱床</td><td>機械零件、外殼</td></tr><tr><td>PETG</td><td>韌性佳、耐化學</td><td>強度高、不易裂</td><td>列印溫度較高</td><td>功能件、容器類</td></tr></tbody></table></div>
+<aside class="np-callout warning"><strong>閱讀提醒：</strong> 原圖將 PLA 描述為「生物可分解、無毒、低味」，這些簡化詞句不宜直接當成所有產品與使用條件下的保證。本講義保留原稿比較方向，但不以「無毒」作為安全結論。實際材料條件請查閱所用線材的產品說明；「容器類」用途也不能單憑這張圖判定其食品接觸適用性。</aside>
+<p>選材時可以先問：「物件是用來展示外觀，還是承擔功能？」接著再比較耐熱、韌性、翹曲與列印條件。原稿的用途欄可作為初步分類，實際選擇仍需配合物件需求。</p></section><section class="np-section" id="panel-7-1" role="tabpanel" tabindex="0" data-tab-title="原稿圖解"><div class="np-page-head"><span class="np-page-number">08</span><div><h2>常見材料：PLA、ABS、PETG</h2><p>從材料特性理解用途與列印條件。</p></div></div><aside class="np-callout warning">原圖的「無毒、生物可分解」為簡化敘述，不能作為所有材料產品與使用條件下的保證。請搭配重點講解中的閱讀提醒。</aside><figure class="np-image-card"><button class="figure-button" type="button" aria-label="放大圖解：PLA、ABS、PETG 材料比較，擷取自原 PDF 第 1 頁"><img src="output/handout/images/07-materials.png" alt="PLA、ABS、PETG 材料比較，擷取自原 PDF 第 1 頁" loading="lazy" decoding="async"></button><figcaption>圖 7：原始材料表，請連同閱讀提醒使用。</figcaption></figure><p class="figure-hint">點選圖解可放大閱讀；按 Esc 關閉。</p></section></article><article class="np-page" data-title="操作小提醒與常見問題"><section class="np-section" id="panel-8-0" role="tabpanel" tabindex="0" data-tab-title="重點講解"><div class="np-page-head"><span class="np-page-number">09</span><div><h2>操作小提醒與常見問題</h2><p>依照成品現象，尋找初步檢查方向。</p></div></div><p>原稿提出三項維護重點：保持平台水平以確保首層附著、保持線材乾燥以提升品質，以及定期清潔噴嘴以避免堵塞。這些工作分別對應首層、材料狀態與擠出路徑。</p>
+<p>遇到列印問題時，可先依成品現象分類，再檢查對應環節。下表整理原稿列出的可能原因；它們是初步檢查方向，並非完整的故障診斷清單。</p>
+<div class="np-table-wrap" tabindex="0" role="region" aria-label="可左右捲動的對照表"><table class="np-table"><thead><tr><th scope="col">現象</th><th scope="col">原稿列出的可能原因</th><th scope="col">初步檢查方向</th></tr></thead><tbody><tr><td>翹曲</td><td>平台未加熱、附著差</td><td>檢查平台加熱狀態與首層附著</td></tr><tr><td>列印偏移</td><td>皮帶鬆脫、張力不足</td><td>檢查皮帶與傳動狀態</td></tr><tr><td>線材斷料／供料中斷</td><td>進料阻塞、線材纏繞</td><td>檢查線材捲與進料路徑</td></tr></tbody></table></div>
+<aside class="np-callout warning"><strong>用語提醒：</strong> 原圖的「線材斷料」同時列出阻塞與纏繞，應理解為供料中斷的現象；不要只把它理解成線材本身斷裂。</aside></section><section class="np-section" id="panel-8-1" role="tabpanel" tabindex="0" data-tab-title="原稿圖解"><div class="np-page-head"><span class="np-page-number">09</span><div><h2>操作小提醒與常見問題</h2><p>依照成品現象，尋找初步檢查方向。</p></div></div><figure class="np-image-card"><button class="figure-button" type="button" aria-label="放大圖解：維護提醒與常見列印問題，擷取自原 PDF 第 1 頁"><img src="output/handout/images/08-troubleshooting.png" alt="維護提醒與常見列印問題，擷取自原 PDF 第 1 頁" loading="lazy" decoding="async"></button><figcaption>圖 8：把列印現象與平台、傳動、送料三個環節對照。</figcaption></figure><p class="figure-hint">點選圖解可放大閱讀；按 Esc 關閉。</p></section></article><article class="np-page" data-title="重點總結"><section class="np-section" id="panel-9-0" role="tabpanel" tabindex="0" data-tab-title="重點講解"><div class="np-page-head"><span class="np-page-number">10</span><div><h2>重點總結</h2><p>機械結構、擠出加熱與精準控制。</p></div></div><p>原圖強調三個原理：<strong>機械結構、擠出加熱、精準控制</strong>。機械結構提供支撐與運動，擠出加熱讓線材熔融並被放置，精準控制則協調位置、送料與溫控。三者配合，才能把數位模型逐層轉換成實體物件。</p>
+<p>可用一句話串起整個流程：<strong>模型經切片產生 G-code，控制板協調三軸運動與加熱擠出，材料在平台上逐層堆疊，最後形成物件。</strong></p></section></article><article class="np-page" data-title="課堂複習"><section class="np-section" id="panel-10-0" role="tabpanel" tabindex="0" data-tab-title="複習題"><div class="np-page-head"><span class="np-page-number">11</span><div><h2>課堂複習</h2><p>用六個問題檢視你的學習成果。</p></div></div><ol class="lesson-list"><li>送料齒輪、加熱塊與噴嘴各自負責什麼工作？</li><li>為什麼 3D 模型在送進列印機之前需要經過切片？</li><li>X、Y、Z 軸分別代表什麼方向？</li><li>皮帶傳動與螺桿傳動如何把馬達旋轉轉成直線移動？</li><li>若出現列印偏移，原稿建議先檢查哪個系統？</li><li>原型、耐熱外殼與功能件，在材料選擇上各需注意哪些差異？</li></ol></section><section class="np-section" id="panel-10-1" role="tabpanel" tabindex="0" data-tab-title="參考答案"><div class="np-page-head"><span class="np-page-number">11</span><div><h2>課堂複習</h2><p>用六個問題檢視你的學習成果。</p></div></div><div class="np-callout success">先試著回答，再用下面的答案核對觀念。</div><ol class="lesson-list"><li>送料齒輪推進線材；加熱塊加熱熔融線材；噴嘴擠出熔融材料。</li><li>切片軟體把模型轉成逐層製作所需的 G-code 指令。</li><li>X＝左右、Y＝前後、Z＝上下。</li><li>皮帶透過皮帶輪帶動滑台；螺桿透過旋轉帶動螺母滑塊移動。</li><li>先檢查皮帶是否鬆脫或張力不足。</li><li>依原稿：PLA 常用於原型；ABS 列有耐熱與外殼用途，但需留意翹曲與加熱床；PETG 列有韌性佳與功能件用途，但需留意列印溫度。實際選材仍依產品說明與物件需求。</li></ol></section></article></div><div class="np-controls"><button class="np-control" id="np-prev" type="button" aria-label="上一頁">←</button><div class="np-progress" aria-hidden="true"><div class="np-progress-bar" id="np-progress"></div></div><button class="np-control" id="np-next" type="button" aria-label="下一頁">→</button><div class="np-page-count" id="np-page-count" aria-live="polite"></div></div></main></div>
+<footer class="np-footer">內容與八張裁圖依《3D列印機器原理.pdf》第 1 頁整理。另含學習目標、圖說、辨讀提醒與複習題。<br><a href="https://github.com/max00189xp/3d-printing-hardware-tutorial" target="_blank" rel="noopener">GitHub 專案 ↗</a><span>3D 列印硬體教學 · 2026</span></footer></div>
+<dialog class="image-dialog" id="image-dialog" aria-label="放大圖解"><button type="button" id="close-image">關閉 ✕</button><p id="large-caption"></p><img id="large-image" alt=""></dialog><noscript><p>請啟用 JavaScript 使用章節分頁；亦可閱讀 <a href="output/handout/3D列印機器原理講義.md">Markdown 講義</a>。</p><style>.np-root .np-page,.np-root .np-section{display:block!important}.np-tabs-wrap,.np-controls{display:none}</style></noscript><script>
+(() => {
+ 'use strict';
+ const root=document.querySelector('.np-root'),pages=[...root.querySelectorAll('.np-page')],nav=document.getElementById('np-nav'),tabs=document.getElementById('np-tabs'),prev=document.getElementById('np-prev'),next=document.getElementById('np-next');
+ let chapter=0,tab=0;
+ const sections=i=>[...pages[i].querySelectorAll('.np-section')];
+ const total=pages.reduce((sum,p,i)=>sum+sections(i).length,0);
+ function hash(){const m=location.hash.match(/^#chapter-(\d+)-tab-(\d+)$/);if(m){chapter=Math.max(0,Math.min(pages.length-1,Number(m[1])-1));tab=Math.max(0,Math.min(sections(chapter).length-1,Number(m[2])-1));}}
+ function button(text,cls){const b=document.createElement('button');b.type='button';b.className=cls;b.textContent=text;return b;}
+ pages.forEach((p,i)=>{const b=button('', 'np-nav-button');b.dataset.chapter=i;const n=document.createElement('span');n.className='np-nav-index';n.textContent=String(i+1).padStart(2,'0');const label=document.createElement('span');label.className='np-nav-label';label.textContent=p.dataset.title;b.append(n,label);b.addEventListener('click',()=>{chapter=i;tab=0;render(true);});nav.append(b);});
+ function render(scroll=false){
+  [...nav.children].forEach((b,i)=>b.setAttribute('aria-current',String(i===chapter)));
+  tabs.replaceChildren();sections(chapter).forEach((s,i)=>{const b=button(s.dataset.tabTitle,'np-tab');b.setAttribute('role','tab');b.id='tab-'+chapter+'-'+i;b.setAttribute('aria-controls',s.id);b.setAttribute('aria-selected',String(i===tab));b.tabIndex=i===tab?0:-1;s.setAttribute('aria-labelledby',b.id);b.addEventListener('click',()=>{tab=i;render();document.getElementById(b.id).focus();});b.addEventListener('keydown',e=>{if(['ArrowLeft','ArrowRight','Home','End'].includes(e.key)){e.preventDefault();const count=sections(chapter).length;tab=e.key==='Home'?0:e.key==='End'?count-1:(tab+(e.key==='ArrowRight'?1:-1)+count)%count;render();tabs.children[tab].focus();}});tabs.append(b);});
+  pages.forEach((p,i)=>{p.hidden=i!==chapter;p.classList.toggle('is-active',i===chapter);sections(i).forEach((s,j)=>{s.hidden=i!==chapter||j!==tab;});});
+  const current=pages.slice(0,chapter).reduce((sum,p,i)=>sum+sections(i).length,0)+tab+1;
+  prev.disabled=current===1;next.disabled=current===total;document.getElementById('np-progress').style.width=current/total*100+'%';document.getElementById('np-page-count').textContent=String(current).padStart(2,'0')+' / '+total+' · '+pages[chapter].dataset.title;
+  history.replaceState(null,'','#chapter-'+String(chapter+1).padStart(2,'0')+'-tab-'+(tab+1));
+  if(scroll&&window.innerWidth<=720)document.getElementById('np-main').scrollIntoView({block:'start'});
+ }
+ function move(delta){if(delta>0){if(tab+1<sections(chapter).length)tab++;else if(chapter+1<pages.length){chapter++;tab=0;}}else{if(tab>0)tab--;else if(chapter>0){chapter--;tab=sections(chapter).length-1;}}render(true);}
+ prev.addEventListener('click',()=>move(-1));next.addEventListener('click',()=>move(1));window.addEventListener('hashchange',()=>{hash();render();});
+ document.addEventListener('keydown',e=>{if(e.defaultPrevented||e.altKey||e.ctrlKey||e.metaKey||e.target.closest('input,textarea,select,button,a,summary,[contenteditable="true"],[role="tab"]')||document.querySelector('dialog[open]'))return;if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();move(e.key==='ArrowRight'?1:-1);}});
+ document.getElementById('print-handout').addEventListener('click',()=>window.print());
+ const dialog=document.getElementById('image-dialog'),large=document.getElementById('large-image'),caption=document.getElementById('large-caption');let origin;
+ root.querySelectorAll('.figure-button').forEach(b=>b.addEventListener('click',()=>{origin=b;const img=b.querySelector('img');large.src=img.src;large.alt=img.alt;caption.textContent=img.alt;dialog.showModal();}));document.getElementById('close-image').addEventListener('click',()=>dialog.close());dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close();});dialog.addEventListener('close',()=>origin?.focus());
+ hash();render();
+})();
+</script></body></html>
