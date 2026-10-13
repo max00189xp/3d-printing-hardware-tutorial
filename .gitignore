@@ -1,0 +1,16 @@
+# Secrets and project-local environments
+.env
+.env.*
+!.env.example
+.venv/
+node_modules/
+__pycache__/
+*.pyc
+
+# Synced reference material must not be uploaded automatically
+sources/
+
+# Rendering and visual QA intermediates
+output/handout/images/source-page.png
+output/handout/images/qa-contact-sheet.png
+output/handout/HackMD講義預覽.jpg
