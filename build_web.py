@@ -1,9 +1,10 @@
-"""Build an offline handout using the project-local reference layout."""
+"""Build a public web handout using the project-local reference layout."""
 from pathlib import Path
 import html
 import re
 
 ROOT = Path(__file__).resolve().parent
+IMAGE_BASE = 'https://raw.githubusercontent.com/max00189xp/3d-printing-hardware-tutorial/main/output/handout/'
 css = (ROOT / 'web-layout.css').read_text(encoding='utf-8-sig')
 source = (ROOT / 'output/handout/3D列印機器原理講義.md').read_text(encoding='utf-8-sig')
 
@@ -61,7 +62,7 @@ for number, (title, body) in enumerate(zip(chunks[1::2], chunks[2::2])):
     if image_match:
         alt, path, caption = image_match.groups()
         body = body.replace(image_match.group(0), '')
-        image_html = '<figure class="np-image-card"><button class="figure-button" type="button" aria-label="放大圖解：'+html.escape(alt, quote=True)+'"><img src="output/handout/'+path+'" alt="'+html.escape(alt, quote=True)+'" loading="lazy" decoding="async"></button><figcaption>'+inline(caption)+'</figcaption></figure><p class="figure-hint">點選圖解可放大閱讀；按 Esc 關閉。</p>'
+        image_html = '<figure class="np-image-card"><button class="figure-button" type="button" aria-label="放大圖解：'+html.escape(alt, quote=True)+'"><img src="'+IMAGE_BASE+path+'" alt="'+html.escape(alt, quote=True)+'" loading="lazy" decoding="async"></button><figcaption>'+inline(caption)+'</figcaption></figure><p class="figure-hint">點選圖解可放大閱讀；按 Esc 關閉。</p>'
     if title == '課堂複習':
         question_body, answer_body = body.split('<details>', 1)
         answer_body = answer_body.split('</details>', 1)[0]

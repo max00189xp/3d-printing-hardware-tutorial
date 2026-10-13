@@ -119,3 +119,12 @@ HackMD MCP 可建立資料夾、建立與修改筆記，但目前沒有圖片上
 - 八張本機圖解均確認正常載入，瀏覽器未回報 JavaScript 錯誤；HTML 的圖片路徑、二十個子頁與常見秘密字串檢查通過。
 - 完成預覽存於 `output/handout/HTML教學網頁完成預覽.jpg`，僅留在本機，依既有忽略規則不提交。
 - 網頁為本機 HTML 與 GitHub 檔案版本，未啟用 GitHub Pages 或進行網站部署。
+
+## 2026-10-13 公開 HTML 網站與圖片網址
+
+- 使用者要求 HTML 圖片為可連線網址並公開網頁，授權本次 GitHub Pages 部署。
+- `build_web.py` 與 `index.html` 的八張圖解改用 GitHub 公開 HTTPS 原始圖片網址；放大圖解也沿用同一網址。
+- HTML 圖片需連線載入；先前的離線相對圖片版本屬歷史狀態。Markdown 閱讀版仍保留本機相對路徑。
+- 公開網站預定網址：https://max00189xp.github.io/3d-printing-hardware-tutorial/
+- 部署來源：`main` 分支根目錄；新增 `.nojekyll`，以純靜態 HTML 部署。
+- 本節建立時尚待推送、啟用 Pages 與公開網站驗證；以後續部署驗證紀錄為準。
