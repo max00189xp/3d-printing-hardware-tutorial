@@ -1,6 +1,7 @@
 # 3D 列印機器原理講義工作紀錄
 
 紀錄日期：2026-10-13（Asia/Taipei）
+最近更新：2026-10-13，補記 GitHub 推送、圖片顯示驗證及新版工具協定。
 
 ## 任務與完成成果
 
@@ -9,7 +10,8 @@
 - PDF 為一頁掃描圖，沒有可直接擷取的文字；內容經影像辨讀整理。
 - 講義包含九個主題、學習目標、對照表、圖說及六題複習題與參考答案。
 - 已裁出並上傳八張圖片，確認全部在 HackMD 正常載入。
-- 已儲存 HackMD 命名版本「圖解講義完成版」及「圖解講義排版確認版」。
+- 已儲存 HackMD 命名版本「圖解講義完成版」、「圖解講義排版確認版」及「GitHub 公開圖片版」。
+- 公開 GitHub 儲存庫已建立，教材與八張裁圖已推送至 `main`；HackMD 已改用 GitHub 圖片，八張圖片均確認正常顯示。
 
 ## HackMD 位置
 
@@ -64,7 +66,8 @@ HackMD MCP 可建立資料夾、建立與修改筆記，但目前沒有圖片上
 - 本機圖片路徑版講義：`output/handout/3D列印機器原理講義.md`
 - HackMD 圖片連結版講義：`output/handout/3D列印機器原理講義-HackMD版.md`
 - HackMD 位置紀錄：`output/handout/HackMD講義連結.txt`
-- 完成預覽：`output/handout/HackMD講義預覽.jpg`
+- HackMD 完成預覽：`output/handout/HackMD講義預覽.jpg`（首次使用 HackMD 圖片來源時的截圖）
+- GitHub 完成預覽：`output/handout/GitHub公開儲存庫完成預覽.jpg`（本機留存，不納入提交）
 - 裁圖腳本：`output/handout/crop_figures.py`
 - 原頁渲染與裁圖：`output/handout/images/`
 
@@ -88,4 +91,18 @@ HackMD MCP 可建立資料夾、建立與修改筆記，但目前沒有圖片上
 - 八張 GitHub 圖片的 HTTP HEAD 檢查皆為 `200`、`image/png`。
 - HackMD 已建立命名版本「GitHub 公開圖片版」，版本 ID 為 `bd5b1973-96f3-4f58-816f-fb9433941e45`。
 - 上方「圖片上傳方式與連結」保留首次建立時的 HackMD 圖片連結作為歷史紀錄；現行講義使用 GitHub 圖片。
-- 提交與推送使用已安裝的 Git 與正常 Git Credential Manager 流程；無需安裝 GitHub CLI 或其他套件。
+- 首次提交與推送使用已安裝的 Git 與正常 Git Credential Manager 流程，當時未使用 GitHub CLI。
+
+## 2026-10-13 完成紀錄與後續工具設定
+
+- `5e526df`：加入原始 PDF、九節圖解講義、八張裁圖、README、裁圖腳本與工作紀錄，已推送。
+- `c77a081`：補記 GitHub 上傳及 HackMD 圖片遷移結果，已推送。
+- `d8601c4`：排除本機完成預覽截圖，已推送。這是本次紀錄更新前的最新提交。
+- 檢查結果：八張本機圖片路徑均存在；八張 GitHub 原始圖片網址均回傳 `200` 與 `image/png`；HackMD 逐段檢查後，八張圖片皆成功載入。
+- 上輪完成時：分支為 `main`，工作區乾淨，沒有尚未推送的提交。本輪開始時另有未追蹤的 `參考網頁/`，屬既有使用者資料，本輪不納入提交或上傳。
+- 使用者新版協定確認的個人 GitHub 帳號為 `max00189xp`。
+- 後續 GitHub 操作使用 CLI 完整路徑：`D:\codex\安裝Github\tools\github-cli\bin\gh.exe`；不依賴 PATH，不讀寫該工具資料夾其他檔案。
+- 本輪已執行 `gh auth status` 與 `gh api user --jq '.login'`，確認正常使用 Windows 憑證區登入，活動帳號為 `max00189xp`。
+- 此專案保留既有作者 `max` 與 `88412709+max00189xp@users.noreply.github.com`，不套用新專案的預設作者、不改寫全域設定。
+- Git 若因沙盒與使用者的資料夾擁有者不同而拒絕操作，使用單次指令的 `-c safe.directory='D:/codex/3D列印硬體教學'`，不新增全域可信目錄設定。
+- 本次僅更新 `agent.md`；提交後以 Git 歷史中的「Update project work log and GitHub tool guidance」提交與實際推送結果為準，避免在檔案內記錄尚未產生的自身 commit ID。
