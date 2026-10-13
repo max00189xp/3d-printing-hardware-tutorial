@@ -125,6 +125,9 @@ HackMD MCP 可建立資料夾、建立與修改筆記，但目前沒有圖片上
 - 使用者要求 HTML 圖片為可連線網址並公開網頁，授權本次 GitHub Pages 部署。
 - `build_web.py` 與 `index.html` 的八張圖解改用 GitHub 公開 HTTPS 原始圖片網址；放大圖解也沿用同一網址。
 - HTML 圖片需連線載入；先前的離線相對圖片版本屬歷史狀態。Markdown 閱讀版仍保留本機相對路徑。
-- 公開網站預定網址：https://max00189xp.github.io/3d-printing-hardware-tutorial/
+- 公開網站網址：https://max00189xp.github.io/3d-printing-hardware-tutorial/
 - 部署來源：`main` 分支根目錄；新增 `.nojekyll`，以純靜態 HTML 部署。
-- 本節建立時尚待推送、啟用 Pages 與公開網站驗證；以後續部署驗證紀錄為準。
+- `e194738` 已提交並推送 HTML 公開圖片與 Pages 準備檔案；Pages 已啟用，來源為 `main` 分支根目錄。
+- 首次部署工作流程 `38406970661` 成功，Pages API 狀態為 `built`。
+- 公開網站已實際開啟驗證，八張圖片的 HTTPS 網址均能在網頁正常載入；章節與子題切換正常。
+- 部署完成預覽：`output/handout/GitHubPages公開網站完成預覽.jpg`（本機留存，不納入提交）。
