@@ -81,7 +81,11 @@ HackMD MCP 可建立資料夾、建立與修改筆記，但目前沒有圖片上
 - 儲存庫：https://github.com/max00189xp/3d-printing-hardware-tutorial
 - origin：https://github.com/max00189xp/3d-printing-hardware-tutorial.git
 - 提交作者：`max`；使用 GitHub 帳號對應的 no-reply email，僅設定於本專案。
-- GitHub 閱讀版講義使用 `images/` 相對路徑；HackMD 版本準備改用 `https://raw.githubusercontent.com/max00189xp/3d-printing-hardware-tutorial/main/output/handout/images/檔名.png`。
+- GitHub 閱讀版講義使用 `images/` 相對路徑；HackMD 版本已改用 `https://raw.githubusercontent.com/max00189xp/3d-printing-hardware-tutorial/main/output/handout/images/檔名.png`。
 - 八張裁圖均確認存在；原始 PDF、講義、裁圖腳本與工作紀錄納入版本管理。
 - `.gitignore` 排除秘密檔案、虛擬環境、`sources/` 及原頁渲染、視覺檢查中繼圖、預覽截圖。
-- 本節建立時：公開儲存庫已建立，初始提交／推送及 HackMD 圖片遷移仍待完成；以後續完成紀錄為準。
+- 初始教材提交：`5e526df95bb66116c8ed74737066e3a9e297ba9e`，已成功推送至 `origin/main`，並確認遠端與本機提交一致。
+- 八張 GitHub 圖片的 HTTP HEAD 檢查皆為 `200`、`image/png`。
+- HackMD 已建立命名版本「GitHub 公開圖片版」，版本 ID 為 `bd5b1973-96f3-4f58-816f-fb9433941e45`。
+- 上方「圖片上傳方式與連結」保留首次建立時的 HackMD 圖片連結作為歷史紀錄；現行講義使用 GitHub 圖片。
+- 提交與推送使用已安裝的 Git 與正常 Git Credential Manager 流程；無需安裝 GitHub CLI 或其他套件。
