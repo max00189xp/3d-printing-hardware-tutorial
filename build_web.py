@@ -2,9 +2,11 @@
 from pathlib import Path
 import html
 import re
+import struct
 
 ROOT = Path(__file__).resolve().parent
 IMAGE_BASE = 'https://raw.githubusercontent.com/max00189xp/3d-printing-hardware-tutorial/main/output/handout/'
+PREVIEW_BASE = 'https://max00189xp.github.io/3d-printing-hardware-tutorial/output/handout/images/web/'
 css = (ROOT / 'web-layout.css').read_text(encoding='utf-8-sig')
 source = (ROOT / 'output/handout/3D列印機器原理講義.md').read_text(encoding='utf-8-sig')
 
@@ -62,7 +64,11 @@ for number, (title, body) in enumerate(zip(chunks[1::2], chunks[2::2])):
     if image_match:
         alt, path, caption = image_match.groups()
         body = body.replace(image_match.group(0), '')
-        image_html = '<figure class="np-image-card"><button class="figure-button" type="button" aria-label="放大圖解：'+html.escape(alt, quote=True)+'"><img src="'+IMAGE_BASE+path+'" alt="'+html.escape(alt, quote=True)+'" loading="lazy" decoding="async"></button><figcaption>'+inline(caption)+'</figcaption></figure><p class="figure-hint">點選圖解可放大閱讀；按 Esc 關閉。</p>'
+        preview_name = Path(path).stem + '.webp'
+        if not (ROOT / 'output/handout/images/web' / preview_name).is_file():
+            raise FileNotFoundError('Run optimize_images.py before building the page')
+        width, height = struct.unpack('>II', (ROOT / 'output/handout' / path).read_bytes()[16:24])
+        image_html = '<figure class="np-image-card"><button class="figure-button" type="button" aria-label="放大圖解：'+html.escape(alt, quote=True)+'"><img src="'+PREVIEW_BASE+preview_name+'" data-full-src="'+IMAGE_BASE+path+'" width="'+str(width)+'" height="'+str(height)+'" alt="'+html.escape(alt, quote=True)+'" loading="lazy" decoding="async"></button><figcaption>'+inline(caption)+'</figcaption></figure><p class="figure-hint">點選圖解可放大閱讀；按 Esc 關閉。</p>'
     if title == '課堂複習':
         question_body, answer_body = body.split('<details>', 1)
         answer_body = answer_body.split('</details>', 1)[0]
@@ -104,6 +110,9 @@ script = '''
  let chapter=0,tab=0;
  const sections=i=>[...pages[i].querySelectorAll('.np-section')];
  const total=pages.reduce((sum,p,i)=>sum+sections(i).length,0);
+ const warmed=new Map();
+ function warmImage(img){if(!img||warmed.has(img.src))return;const cached=new Image();cached.decoding='async';warmed.set(img.src,cached);cached.src=img.src;}
+ function warmNearby(){warmImage(pages[chapter].querySelector('.figure-button img'));for(let i=chapter+1;i<pages.length;i++){const img=pages[i].querySelector('.figure-button img');if(img){warmImage(img);break;}}}
  function hash(){const m=location.hash.match(/^#chapter-(\\d+)-tab-(\\d+)$/);if(m){chapter=Math.max(0,Math.min(pages.length-1,Number(m[1])-1));tab=Math.max(0,Math.min(sections(chapter).length-1,Number(m[2])-1));}}
  function button(text,cls){const b=document.createElement('button');b.type='button';b.className=cls;b.textContent=text;return b;}
  pages.forEach((p,i)=>{const b=button('', 'np-nav-button');b.dataset.chapter=i;const n=document.createElement('span');n.className='np-nav-index';n.textContent=String(i+1).padStart(2,'0');const label=document.createElement('span');label.className='np-nav-label';label.textContent=p.dataset.title;b.append(n,label);b.addEventListener('click',()=>{chapter=i;tab=0;render(true);});nav.append(b);});
@@ -111,6 +120,7 @@ script = '''
   [...nav.children].forEach((b,i)=>b.setAttribute('aria-current',String(i===chapter)));
   tabs.replaceChildren();sections(chapter).forEach((s,i)=>{const b=button(s.dataset.tabTitle,'np-tab');b.setAttribute('role','tab');b.id='tab-'+chapter+'-'+i;b.setAttribute('aria-controls',s.id);b.setAttribute('aria-selected',String(i===tab));b.tabIndex=i===tab?0:-1;s.setAttribute('aria-labelledby',b.id);b.addEventListener('click',()=>{tab=i;render();document.getElementById(b.id).focus();});b.addEventListener('keydown',e=>{if(['ArrowLeft','ArrowRight','Home','End'].includes(e.key)){e.preventDefault();const count=sections(chapter).length;tab=e.key==='Home'?0:e.key==='End'?count-1:(tab+(e.key==='ArrowRight'?1:-1)+count)%count;render();tabs.children[tab].focus();}});tabs.append(b);});
   pages.forEach((p,i)=>{p.hidden=i!==chapter;p.classList.toggle('is-active',i===chapter);sections(i).forEach((s,j)=>{s.hidden=i!==chapter||j!==tab;});});
+  warmNearby();
   const current=pages.slice(0,chapter).reduce((sum,p,i)=>sum+sections(i).length,0)+tab+1;
   prev.disabled=current===1;next.disabled=current===total;document.getElementById('np-progress').style.width=current/total*100+'%';document.getElementById('np-page-count').textContent=String(current).padStart(2,'0')+' / '+total+' · '+pages[chapter].dataset.title;
   history.replaceState(null,'','#chapter-'+String(chapter+1).padStart(2,'0')+'-tab-'+(tab+1));
@@ -119,9 +129,10 @@ script = '''
  function move(delta){if(delta>0){if(tab+1<sections(chapter).length)tab++;else if(chapter+1<pages.length){chapter++;tab=0;}}else{if(tab>0)tab--;else if(chapter>0){chapter--;tab=sections(chapter).length-1;}}render(true);}
  prev.addEventListener('click',()=>move(-1));next.addEventListener('click',()=>move(1));window.addEventListener('hashchange',()=>{hash();render();});
  document.addEventListener('keydown',e=>{if(e.defaultPrevented||e.altKey||e.ctrlKey||e.metaKey||e.target.closest('input,textarea,select,button,a,summary,[contenteditable="true"],[role="tab"]')||document.querySelector('dialog[open]'))return;if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();move(e.key==='ArrowRight'?1:-1);}});
- document.getElementById('print-handout').addEventListener('click',()=>window.print());
+ document.getElementById('print-handout').addEventListener('click',async event=>{const control=event.currentTarget;control.disabled=true;control.textContent='正在準備圖片…';try{const images=[...root.querySelectorAll('.figure-button img')];images.forEach(img=>{img.loading='eager';warmImage(img);});await Promise.all(images.map(img=>img.decode().catch(()=>{})));window.print();}finally{control.disabled=false;control.textContent='列印完整講義';}});
  const dialog=document.getElementById('image-dialog'),large=document.getElementById('large-image'),caption=document.getElementById('large-caption');let origin;
- root.querySelectorAll('.figure-button').forEach(b=>b.addEventListener('click',()=>{origin=b;const img=b.querySelector('img');large.src=img.src;large.alt=img.alt;caption.textContent=img.alt;dialog.showModal();}));document.getElementById('close-image').addEventListener('click',()=>dialog.close());dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close();});dialog.addEventListener('close',()=>origin?.focus());
+ let imageGeneration=0;
+ root.querySelectorAll('.figure-button').forEach(b=>b.addEventListener('click',()=>{origin=b;const img=b.querySelector('img');large.src=img.currentSrc||img.src;large.alt=img.alt;caption.textContent=img.alt+' · 正在載入高清原圖…';dialog.showModal();const generation=++imageGeneration;const full=new Image();full.onload=()=>{if(generation===imageGeneration&&dialog.open){large.src=full.src;caption.textContent=img.alt;}};full.onerror=()=>{if(generation===imageGeneration&&dialog.open)caption.textContent=img.alt+' · 高清原圖暫時無法載入，先顯示閱讀圖。';};full.src=img.dataset.fullSrc;}));document.getElementById('close-image').addEventListener('click',()=>dialog.close());dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close();});dialog.addEventListener('close',()=>{imageGeneration++;origin?.focus();});
  hash();render();
 })();
 '''
